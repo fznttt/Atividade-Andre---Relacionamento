@@ -1,0 +1,46 @@
+-- Tabela Estudantes
+CREATE TABLE IF NOT EXISTS Estudantes (
+  id_estudante INT PRIMARY KEY,
+  nome VARCHAR(100)
+);
+
+-- Tabela Cursos
+CREATE TABLE IF NOT EXISTS Cursos (
+  id_curso INT PRIMARY KEY,
+  nome_curso VARCHAR(100)
+);
+
+-- Tabela Matriculas (relacionamento entre Estudantes e Cursos)
+CREATE TABLE IF NOT EXISTS Matriculas (
+  id_estudante INT,
+  id_curso INT,
+  PRIMARY KEY (id_estudante, id_curso),
+  FOREIGN KEY (id_estudante) REFERENCES Estudantes(id_estudante),
+  FOREIGN KEY (id_curso) REFERENCES Cursos(id_curso)
+);
+
+-- Inserindo Estudantes
+INSERT INTO Estudantes (id_estudante, nome) VALUES (1, 'Felipe');
+INSERT INTO Estudantes (id_estudante, nome) VALUES (2, 'João');
+INSERT INTO Estudantes (id_estudante, nome) VALUES (3, 'Victor');
+
+-- Inserindo Cursos 
+INSERT INTO Cursos (id_curso, nome_curso) VALUES (1, 'Banco de Dados');
+INSERT INTO Cursos (id_curso, nome_curso) VALUES (2, 'Matemática 2');
+INSERT INTO Cursos (id_curso, nome_curso) VALUES (3, 'Programação');
+
+-- Inserindo Matriculas (Estudantes em Cursos)
+INSERT INTO Matriculas (id_estudante, id_curso) VALUES (1, 1);
+INSERT INTO Matriculas (id_estudante, id_curso) VALUES (2, 2);
+
+-- Consultar todos os estudantes e os cursos nos quais estão matriculados (INNER JOIN)
+SELECT Estudantes.nome, Cursos.nome_curso
+FROM Estudantes
+INNER JOIN Matriculas ON Estudantes.id_estudante = Matriculas.id_estudante
+INNER JOIN Cursos ON Matriculas.id_curso = Cursos.id_curso;
+
+-- Encontrar os estudantes que não estão matriculados em nenhum curso (LEFT JOIN)
+SELECT Estudantes.nome
+FROM Estudantes
+LEFT JOIN Matriculas ON Estudantes.id_estudante = Matriculas.id_estudante
+WHERE Matriculas.id_curso IS NULL;
